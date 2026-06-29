@@ -1,6 +1,4 @@
-const API_BASE = window.location.hostname.includes('localhost')
-  ? 'http://localhost:5000/api'
-  : 'https://home-fix-server.onrender.com/api';
+﻿const API_BASE = 'http://localhost:5000/api';
 
 async function apiRequest(path, options = {}) {
   const response = await fetch(`${API_BASE}${path}`, {
@@ -12,14 +10,16 @@ async function apiRequest(path, options = {}) {
   });
 
   const data = await response.json().catch(() => ({}));
+
   if (!response.ok) {
     throw new Error(data.message || data.error || 'API request failed');
   }
+
   return data;
 }
 
 function showMessage(element, message, type = 'success') {
   if (!element) return;
   element.textContent = message;
-  element.className = `inline-message ${type}`;
+  element.className = `message-box ${type}`;
 }

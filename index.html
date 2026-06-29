@@ -3,48 +3,124 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Home Fixer | Sign In</title>
-  <link rel="stylesheet" href="style/style.css" />
+  <title>Home Fixer | Home Repair Service Website</title>
+  <link rel="stylesheet" href="style/landing.css" />
 </head>
-<body class="auth-bg">
-  <main class="phone-frame auth-phone">
-    <div class="ios-status">
-      <span>9:41</span>
-      <span>▮▮▮  Wi‑Fi  ▰</span>
-    </div>
+<body>
+  <header class="landing-header">
+    <a class="brand" href="index.html">
+      <span class="brand-icon">HF</span>
+      <span>Home Fixer</span>
+    </a>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#services">Services</a>
+      <a href="#how">How It Works</a>
+      <a href="pages/home.html">Open App</a>
+      <a class="nav-btn" href="pages/create-request.html">Create Request</a>
+    </nav>
+  </header>
 
-    <section class="signin-card">
-      <h1 class="brand brand-dark">Home Fixer</h1>
-
-      <div class="signin-content">
-        <h2>Create an account</h2>
-        <p>Enter your email to sign up for this app</p>
-
-        <form id="registerForm" class="stack-form">
-          <input id="registerName" type="text" placeholder="Full name" value="Ameer" />
-          <input id="registerEmail" type="email" placeholder="email@domain.com" />
-          <input id="registerPassword" type="password" placeholder="Password" value="123456" />
-          <button type="submit" class="btn btn-black">Continue</button>
-        </form>
-
-        <div id="authMessage" class="inline-message hidden"></div>
-
-        <div class="divider"><span></span><b>or</b><span></span></div>
-
-        <a class="social-btn" href="pages/home.html"><span class="google-g">G</span> Continue with Google</a>
-        <a class="social-btn" href="pages/home.html"><span class="apple-logo">●</span> Continue with Apple</a>
-
-        <p class="terms">
-          By clicking continue, you agree to our
-          <strong>Terms of Service</strong><br />
-          and <strong>Privacy Policy</strong>
+  <main>
+    <section class="hero">
+      <div class="hero-text">
+        <span class="badge">Responsive home repair platform</span>
+        <h1>Fix it fast. <span>Done right.</span></h1>
+        <p>
+          Home Fixer connects customers with trusted home repair technicians. Users can choose a service,
+          create a repair request, and track the request status through a connected dashboard.
         </p>
+        <div class="hero-actions">
+          <a class="btn primary" href="pages/create-request.html">Create Request</a>
+          <a class="btn dark" href="pages/home.html">Open Mobile App View</a>
+          <a class="btn light" href="pages/dashboard.html">View Dashboard</a>
+        </div>
+        <div class="stats">
+          <article><strong>6</strong><span>Service categories</span></article>
+          <article><strong>Live</strong><span>MongoDB requests</span></article>
+          <article><strong>CRUD</strong><span>Backend API</span></article>
+        </div>
+      </div>
+
+      <aside class="hero-card">
+        <div class="card-top">
+          <strong>Live Request Preview</strong>
+          <span class="online">Online</span>
+        </div>
+        <div class="request-preview">
+          <div><strong>Kitchen water leak</strong><span>Plumbing · Haifa · Urgent</span></div>
+          <b>In progress</b>
+        </div>
+        <div class="request-preview">
+          <div><strong>Lighting problem</strong><span>Electric · Tel Aviv · Normal</span></div>
+          <b class="blue">Open</b>
+        </div>
+        <div class="request-preview">
+          <div><strong>Deep cleaning</strong><span>Cleaning · Nazareth · Completed</span></div>
+          <b class="green">Done</b>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section" id="about">
+      <div class="section-title">
+        <span class="badge">About the website</span>
+        <h2>What is Home Fixer?</h2>
+        <p>
+          Home Fixer is a web system for managing home repair services. It includes a customer interface,
+          service request form, backend API, MongoDB database, and admin dashboard for tracking and updating repair requests.
+        </p>
+      </div>
+      <div class="info-grid">
+        <article><div class="icon">🌐</div><h3>Website + Mobile-first app</h3><p>The landing page explains the service, while the app screens provide the user flow.</p></article>
+        <article><div class="icon">🧾</div><h3>Repair requests</h3><p>Customers submit service requests with city, address, service type and priority.</p></article>
+        <article><div class="icon">🗄️</div><h3>Backend database</h3><p>Requests are saved in MongoDB and managed through a Node.js API.</p></article>
       </div>
     </section>
 
-    <div class="ios-homebar"></div>
+    <section class="section soft" id="services">
+      <div class="section-title center">
+        <span class="badge">Services</span>
+        <h2>Services available in the system</h2>
+        <p>Each service can be selected by the customer when creating a repair request.</p>
+      </div>
+      <div class="services-grid">
+        <a href="pages/create-request.html" class="service-card"><span>🔧</span><h3>Plumbing</h3><p>Leaks, faucets, pipes and kitchen or bathroom water problems.</p></a>
+        <a href="pages/create-request.html" class="service-card"><span>⚡</span><h3>Electric</h3><p>Lighting, switches, sockets and home electrical issues.</p></a>
+        <a href="pages/create-request.html" class="service-card"><span>🧹</span><h3>Cleaning</h3><p>Deep cleaning, home cleaning and post-repair cleaning.</p></a>
+        <a href="pages/create-request.html" class="service-card"><span>🏠</span><h3>Maintenance</h3><p>General home repairs, installations and small fixes.</p></a>
+      </div>
+    </section>
+
+    <section class="section" id="how">
+      <div class="section-title center">
+        <span class="badge">Process</span>
+        <h2>How it works</h2>
+      </div>
+      <div class="steps">
+        <article><b>1</b><h3>Choose service</h3><p>The customer chooses the needed home repair service.</p></article>
+        <article><b>2</b><h3>Create request</h3><p>The customer fills the repair request form.</p></article>
+        <article><b>3</b><h3>Save in MongoDB</h3><p>The backend stores the request in the database.</p></article>
+        <article><b>4</b><h3>Track status</h3><p>The dashboard shows and updates request status.</p></article>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div>
+        <span class="badge">Ready for demo</span>
+        <h2>Start from the website, then open the app flow.</h2>
+        <p>This page makes the project look like a real website, while keeping the original Figma mobile-first screens and backend functionality.</p>
+      </div>
+      <div class="cta-actions">
+        <a class="btn primary" href="pages/home.html">Open App Screens</a>
+        <a class="btn light" href="pages/dashboard.html">Dashboard</a>
+      </div>
+    </section>
   </main>
 
-  <script src="js/auth.js"></script>
+  <footer>
+    <span>Home Fixer MVP © 2026</span>
+    <span>Frontend · Backend · MongoDB</span>
+  </footer>
 </body>
 </html>
