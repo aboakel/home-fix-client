@@ -1,4 +1,8 @@
-﻿const API_BASE = 'http://localhost:5000/api';
+﻿const API_BASE =
+  window.location.hostname.includes('localhost') ||
+  window.location.hostname.includes('127.0.0.1')
+    ? 'http://localhost:5000/api'
+    : 'https://home-fix-server.onrender.com/api';
 
 async function apiRequest(path, options = {}) {
   const response = await fetch(`${API_BASE}${path}`, {
