@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Request | Home Fix</title>
+  <link rel="stylesheet" href="../style/style.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">Home Fix</div>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="create-request.html">Create Request</a>
+      <a href="dashboard.html">Dashboard</a>
+    </nav>
+  </header>
+
+  <main class="page-layout">
+    <section class="panel wide">
+      <h1>Create Repair Request</h1>
+      <p class="muted">Fill the customer problem details. This is the main CRUD create flow.</p>
+      <div id="messageBox" class="message hidden"></div>
+
+      <form id="requestForm" class="form grid-form">
+        <input id="customerName" type="text" placeholder="Customer name" required />
+        <input id="phone" type="text" placeholder="Phone number" required />
+        <select id="city" required>
+          <option value="">Choose city</option>
+          <option value="Arara">Arara</option>
+          <option value="Haifa">Haifa</option>
+          <option value="Hadera">Hadera</option>
+          <option value="Netanya">Netanya</option>
+          <option value="Tel Aviv">Tel Aviv</option>
+          <option value="Jerusalem">Jerusalem</option>
+        </select>
+        <input id="address" type="text" placeholder="Address" required />
+        <select id="serviceType" required>
+          <option value="">Service type</option>
+          <option value="plumbing">Plumbing</option>
+          <option value="electricity">Electricity</option>
+          <option value="air_conditioning">Air conditioning</option>
+          <option value="painting">Painting</option>
+          <option value="carpentry">Carpentry</option>
+          <option value="other">Other</option>
+        </select>
+        <select id="priority">
+          <option value="low">Low</option>
+          <option value="medium" selected>Medium</option>
+          <option value="high">High</option>
+          <option value="urgent">Urgent</option>
+        </select>
+        <input id="imageUrl" type="url" placeholder="Image URL - optional" />
+        <input id="estimatedPrice" type="number" min="0" placeholder="Estimated price" />
+        <textarea id="description" placeholder="Describe the problem" required></textarea>
+        <button type="submit" class="btn primary full-row">Submit Request</button>
+      </form>
+    </section>
+
+    <aside class="panel">
+      <h2>Weather Check</h2>
+      <p class="muted">External API example for repair planning.</p>
+      <button id="weatherBtn" class="btn secondary full">Check City Weather</button>
+      <div id="weatherBox" class="weather-box">Choose a city and click the button.</div>
+    </aside>
+  </main>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/create-request.js"></script>
+</body>
+</html>
