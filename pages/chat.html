@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home Fixer | Chat</title>
+  <link rel="stylesheet" href="../style/style.css" />
+</head>
+<body>
+  <main class="phone-frame app-phone white-screen chat-screen">
+    <header class="top-icons">
+      <a href="home.html" class="icon-link">‹</a>
+    </header>
+
+    <section id="chatHeader" class="chat-logo-area"></section>
+
+    <section id="chatThread" class="chat-thread"></section>
+
+    <form class="chat-input">
+      <a href="attach.html" class="plus-chat">+</a>
+      <input placeholder="How can I help you?" />
+      <button type="button">⌄</button>
+    </form>
+  </main>
+
+  <script src="../js/providers.js"></script>
+  <script>
+    renderChatHeader();
+    renderChatThread();
+  </script>
+</body>
+</html>

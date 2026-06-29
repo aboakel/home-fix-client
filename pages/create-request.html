@@ -3,66 +3,55 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Create Request | Home Fix</title>
+  <title>Home Fixer | Create Request</title>
   <link rel="stylesheet" href="../style/style.css" />
 </head>
 <body>
-  <header class="navbar">
-    <div class="logo">Home Fix</div>
-    <nav>
-      <a href="../index.html">Home</a>
-      <a href="create-request.html">Create Request</a>
-      <a href="dashboard.html">Dashboard</a>
-    </nav>
-  </header>
+  <main class="phone-frame app-phone white-screen request-screen">
+    <header class="top-icons">
+      <a href="home.html" class="icon-link">‹</a>
+      <a href="dashboard.html" class="icon-link">☷</a>
+    </header>
 
-  <main class="page-layout">
-    <section class="panel wide">
-      <h1>Create Repair Request</h1>
-      <p class="muted">Fill the customer problem details. This is the main CRUD create flow.</p>
-      <div id="messageBox" class="message hidden"></div>
+    <section class="request-card">
+      <h1 class="brand small-brand center">HomeFixer</h1>
+      <h2>Create Repair Request</h2>
+      <p class="muted">This form is connected to the backend and MongoDB.</p>
 
-      <form id="requestForm" class="form grid-form">
-        <input id="customerName" type="text" placeholder="Customer name" required />
-        <input id="phone" type="text" placeholder="Phone number" required />
-        <select id="city" required>
-          <option value="">Choose city</option>
-          <option value="Arara">Arara</option>
-          <option value="Haifa">Haifa</option>
-          <option value="Hadera">Hadera</option>
-          <option value="Netanya">Netanya</option>
-          <option value="Tel Aviv">Tel Aviv</option>
-          <option value="Jerusalem">Jerusalem</option>
-        </select>
-        <input id="address" type="text" placeholder="Address" required />
+      <form id="requestForm" class="stack-form">
+        <input id="customerName" placeholder="Customer name" required />
+        <input id="phone" placeholder="Phone" required />
+        <input id="city" placeholder="City" required />
+        <input id="address" placeholder="Address" required />
         <select id="serviceType" required>
           <option value="">Service type</option>
           <option value="plumbing">Plumbing</option>
-          <option value="electricity">Electricity</option>
-          <option value="air_conditioning">Air conditioning</option>
+          <option value="electric">Electric</option>
+          <option value="cleaning">Cleaning</option>
+          <option value="maintenance">Maintenance</option>
           <option value="painting">Painting</option>
           <option value="carpentry">Carpentry</option>
-          <option value="other">Other</option>
         </select>
+        <textarea id="description" placeholder="Describe the problem" required></textarea>
         <select id="priority">
-          <option value="low">Low</option>
-          <option value="medium" selected>Medium</option>
+          <option value="normal">Normal</option>
           <option value="high">High</option>
           <option value="urgent">Urgent</option>
         </select>
-        <input id="imageUrl" type="url" placeholder="Image URL - optional" />
-        <input id="estimatedPrice" type="number" min="0" placeholder="Estimated price" />
-        <textarea id="description" placeholder="Describe the problem" required></textarea>
-        <button type="submit" class="btn primary full-row">Submit Request</button>
+        <input id="estimatedPrice" type="number" placeholder="Estimated price ₪" value="220" />
+        <button type="button" id="weatherBtn" class="btn btn-soft">Check Weather</button>
+        <div id="weatherBox" class="inline-message hidden"></div>
+        <button type="submit" class="btn blue-wide">Submit Request</button>
+        <div id="requestMessage" class="inline-message hidden"></div>
       </form>
     </section>
 
-    <aside class="panel">
-      <h2>Weather Check</h2>
-      <p class="muted">External API example for repair planning.</p>
-      <button id="weatherBtn" class="btn secondary full">Check City Weather</button>
-      <div id="weatherBox" class="weather-box">Choose a city and click the button.</div>
-    </aside>
+    <nav class="bottom-nav figma-nav">
+      <a href="../index.html" title="Profile">●</a>
+      <a href="home.html" title="Home">⌂</a>
+      <a href="messages.html" title="Messages">▣</a>
+      <a href="dashboard.html" title="Cart">▦</a>
+    </nav>
   </main>
 
   <script src="../js/api.js"></script>

@@ -1,50 +1,50 @@
-const requestForm = document.getElementById('requestForm');
+const form = document.getElementById('requestForm');
+const message = document.getElementById('requestMessage');
 const weatherBtn = document.getElementById('weatherBtn');
 const weatherBox = document.getElementById('weatherBox');
 
-requestForm?.addEventListener('submit', async (event) => {
-  event.preventDefault();
-
-  const currentUser = getCurrentUser();
-
-  const payload = {
-    customerName: document.getElementById('customerName').value.trim(),
-    phone: document.getElementById('phone').value.trim(),
-    city: document.getElementById('city').value,
-    address: document.getElementById('address').value.trim(),
-    serviceType: document.getElementById('serviceType').value,
-    description: document.getElementById('description').value.trim(),
-    priority: document.getElementById('priority').value,
-    imageUrl: document.getElementById('imageUrl').value.trim(),
-    estimatedPrice: Number(document.getElementById('estimatedPrice').value || 0),
-    createdBy: currentUser?.id || null
-  };
-
-  try {
-    const result = await api.post('/requests', payload);
-    showMessage(`Request created successfully. ID: ${result.request._id}`, 'success');
-    requestForm.reset();
-  } catch (error) {
-    showMessage(error.message, 'error');
-  }
-});
-
 weatherBtn?.addEventListener('click', async () => {
-  const city = document.getElementById('city').value;
+  const city = document.getElementById('city').value.trim();
   if (!city) {
-    weatherBox.textContent = 'Choose a city first.';
+    showMessage(weatherBox, 'Enter a city first.', 'error');
     return;
   }
 
   try {
-    const weather = await api.get(`/weather?city=${encodeURIComponent(city)}`);
-    weatherBox.innerHTML = `
-      <strong>${weather.city}</strong><br />
-      Temperature: ${weather.temperature}°C<br />
-      Wind speed: ${weather.windspeed} km/h<br />
-      Source: ${weather.source}
-    `;
+    const data = await apiRequest(`/weather?city=${encodeURIComponent(city)}`);
+    const text = data.temperature
+      ? `Weather in ${city}: ${data.temperature}°C, ${data.description || 'available'}`
+      : `Weather data checked for ${city}.`;
+    showMessage(weatherBox, text, 'success');
   } catch (error) {
-    weatherBox.textContent = error.message;
+    showMessage(weatherBox, 'Weather API is unavailable, but request submission still works.', 'warning');
+  }
+});
+
+form?.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  const payload = {
+    customerName: document.getElementById('customerName').value.trim(),
+    phone: document.getElementById('phone').value.trim(),
+    city: document.getElementById('city').value.trim(),
+    address: document.getElementById('address').value.trim(),
+    serviceType: document.getElementById('serviceType').value,
+    description: document.getElementById('description').value.trim(),
+    priority: document.getElementById('priority').value,
+    estimatedPrice: Number(document.getElementById('estimatedPrice').value || 0)
+  };
+
+  try {
+    await apiRequest('/requests', {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    });
+
+    showMessage(message, 'Request created successfully. You can view it in the dashboard.', 'success');
+    form.reset();
+    setTimeout(() => window.location.href = 'dashboard.html', 900);
+  } catch (error) {
+    showMessage(message, error.message, 'error');
   }
 });

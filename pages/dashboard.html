@@ -3,62 +3,51 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard | Home Fix</title>
+  <title>Home Fixer | Dashboard</title>
   <link rel="stylesheet" href="../style/style.css" />
 </head>
 <body>
-  <header class="navbar">
-    <div class="logo">Home Fix</div>
-    <nav>
-      <a href="../index.html">Home</a>
-      <a href="create-request.html">Create Request</a>
-      <a href="dashboard.html">Dashboard</a>
-    </nav>
-  </header>
-
-  <main class="dashboard">
-    <section class="panel wide">
-      <div class="panel-header">
-        <div>
-          <h1>Requests Dashboard</h1>
-          <p class="muted">Read, update, delete and filter requests.</p>
-        </div>
-        <a class="btn primary" href="create-request.html">+ New Request</a>
+  <main class="phone-frame app-phone dashboard-phone">
+    <header class="home-header">
+      <div>
+        <h1 class="brand small-brand">Dashboard</h1>
+        <p>Backend CRUD control</p>
       </div>
+      <a class="filter-btn" href="home.html">⌂</a>
+    </header>
 
-      <div id="messageBox" class="message hidden"></div>
-
-      <form id="filterForm" class="filters">
-        <input id="search" type="text" placeholder="Search text" />
-        <input id="city" type="text" placeholder="City" />
-        <select id="status">
-          <option value="">All status</option>
-          <option value="open">Open</option>
-          <option value="in_progress">In progress</option>
-          <option value="completed">Completed</option>
-          <option value="cancelled">Cancelled</option>
-        </select>
-        <select id="serviceType">
-          <option value="">All services</option>
-          <option value="plumbing">Plumbing</option>
-          <option value="electricity">Electricity</option>
-          <option value="air_conditioning">Air conditioning</option>
-          <option value="painting">Painting</option>
-          <option value="carpentry">Carpentry</option>
-          <option value="other">Other</option>
-        </select>
-        <select id="sortBy">
-          <option value="newest">Newest</option>
-          <option value="oldest">Oldest</option>
-          <option value="priority">Priority</option>
-          <option value="price">Price</option>
-        </select>
-        <button class="btn secondary" type="submit">Filter</button>
-      </form>
-
-      <div id="statsBox" class="stats-grid"></div>
-      <div id="requestsList" class="cards-grid"></div>
+    <section class="dashboard-tools">
+      <input id="filterCity" placeholder="City" />
+      <select id="filterStatus">
+        <option value="">All status</option>
+        <option value="open">Open</option>
+        <option value="in_progress">In progress</option>
+        <option value="completed">Completed</option>
+        <option value="cancelled">Cancelled</option>
+      </select>
+      <select id="filterService">
+        <option value="">All services</option>
+        <option value="plumbing">Plumbing</option>
+        <option value="electric">Electric</option>
+        <option value="cleaning">Cleaning</option>
+        <option value="maintenance">Maintenance</option>
+        <option value="painting">Painting</option>
+        <option value="carpentry">Carpentry</option>
+      </select>
+      <button id="filterBtn" class="btn btn-soft">Filter</button>
+      <button id="resetBtn" class="btn btn-soft">Reset</button>
     </section>
+
+    <section id="statsGrid" class="stats-grid"></section>
+    <div id="dashboardMessage" class="inline-message hidden"></div>
+    <section id="requestsList" class="request-list"></section>
+
+    <nav class="bottom-nav figma-nav">
+      <a href="../index.html" title="Profile">●</a>
+      <a href="home.html" title="Home">⌂</a>
+      <a href="messages.html" title="Messages">▣</a>
+      <a class="active" href="dashboard.html" title="Cart">▦</a>
+    </nav>
   </main>
 
   <script src="../js/api.js"></script>

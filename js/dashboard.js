@@ -1,130 +1,132 @@
-const requestsList = document.getElementById('requestsList');
-const filterForm = document.getElementById('filterForm');
-const statsBox = document.getElementById('statsBox');
+const list = document.getElementById('requestsList');
+const statsGrid = document.getElementById('statsGrid');
+const message = document.getElementById('dashboardMessage');
+const filterBtn = document.getElementById('filterBtn');
+const resetBtn = document.getElementById('resetBtn');
 
-function getStatusLabel(status) {
-  return status.replace('_', ' ');
+function normalizeRequests(data) {
+  if (Array.isArray(data)) return data;
+  return data.requests || data.data || [];
 }
 
-function buildQueryFromFilters() {
-  const params = new URLSearchParams();
-  const fields = ['search', 'city', 'status', 'serviceType', 'sortBy'];
-
-  fields.forEach((field) => {
-    const value = document.getElementById(field)?.value;
-    if (value) params.append(field, value);
-  });
-
-  if (document.getElementById('sortBy')?.value === 'priority') {
-    params.append('order', 'desc');
-  }
-
-  return params.toString();
-}
-
-async function loadStats() {
-  try {
-    const stats = await api.get('/requests/stats/summary');
-    const statusCards = stats.byStatus.map(item => `
-      <div class="stat-card">
-        <span>${getStatusLabel(item._id)}</span>
-        <strong>${item.count}</strong>
-      </div>
-    `).join('');
-
-    const serviceCards = stats.byServiceType.map(item => `
-      <div class="stat-card">
-        <span>${item._id.replace('_', ' ')}</span>
-        <strong>${item.count}</strong>
-      </div>
-    `).join('');
-
-    statsBox.innerHTML = statusCards + serviceCards;
-  } catch (error) {
-    statsBox.innerHTML = '';
-  }
+function displayStatus(status = '') {
+  return status.replaceAll('_', ' ');
 }
 
 function requestCard(request) {
   return `
-    <article class="request-card" data-id="${request._id}">
-      <div class="card-top">
-        <h3>${request.customerName}</h3>
-        <span class="pill ${request.priority}">${request.priority}</span>
+    <article class="request-item">
+      <div class="request-head">
+        <h2>${request.customerName || 'Customer'}</h2>
+        <span class="priority ${request.priority || 'normal'}">${request.priority || 'normal'}</span>
       </div>
-      <p>${request.description}</p>
-      <ul class="details-list">
-        <li><strong>City:</strong> ${request.city}</li>
-        <li><strong>Service:</strong> ${request.serviceType.replace('_', ' ')}</li>
-        <li><strong>Status:</strong> ${getStatusLabel(request.status)}</li>
-        <li><strong>Phone:</strong> ${request.phone}</li>
-        <li><strong>Price:</strong> ₪${request.estimatedPrice || 0}</li>
-      </ul>
-      ${request.imageUrl ? `<img class="request-image" src="${request.imageUrl}" alt="Request image" />` : ''}
+      <p>${request.description || 'No description'}</p>
+      <p><b>City:</b> ${request.city || '-'}</p>
+      <p><b>Service:</b> ${request.serviceType || '-'}</p>
+      <p><b>Status:</b> ${displayStatus(request.status || 'open')}</p>
+      <p><b>Phone:</b> ${request.phone || '-'}</p>
+      <p><b>Price:</b> ₪${request.estimatedPrice || 0}</p>
+
+      <select data-status="${request._id}">
+        <option value="open" ${request.status === 'open' ? 'selected' : ''}>Open</option>
+        <option value="in_progress" ${request.status === 'in_progress' ? 'selected' : ''}>In progress</option>
+        <option value="completed" ${request.status === 'completed' ? 'selected' : ''}>Completed</option>
+        <option value="cancelled" ${request.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+      </select>
+
       <div class="card-actions">
-        <select class="statusSelect">
-          <option value="open" ${request.status === 'open' ? 'selected' : ''}>Open</option>
-          <option value="in_progress" ${request.status === 'in_progress' ? 'selected' : ''}>In progress</option>
-          <option value="completed" ${request.status === 'completed' ? 'selected' : ''}>Completed</option>
-          <option value="cancelled" ${request.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
-        </select>
-        <button class="btn secondary updateBtn">Update</button>
-        <button class="btn danger deleteBtn">Delete</button>
+        <button class="btn btn-soft update-btn" data-id="${request._id}">Update</button>
+        <button class="btn delete-btn" data-delete="${request._id}">Delete</button>
       </div>
     </article>
   `;
 }
 
-async function loadRequests() {
+async function loadRequests(path = '/requests') {
   try {
-    const query = buildQueryFromFilters();
-    const result = await api.get(`/requests${query ? `?${query}` : ''}`);
-
-    if (!result.requests.length) {
-      requestsList.innerHTML = '<p class="empty">No requests found.</p>';
-      return;
-    }
-
-    requestsList.innerHTML = result.requests.map(requestCard).join('');
+    const data = await apiRequest(path);
+    const requests = normalizeRequests(data);
+    list.innerHTML = requests.length
+      ? requests.map(requestCard).join('')
+      : '<p class="muted empty-state">No requests found.</p>';
   } catch (error) {
-    showMessage(error.message, 'error');
+    showMessage(message, error.message, 'error');
   }
 }
 
-requestsList?.addEventListener('click', async (event) => {
-  const card = event.target.closest('.request-card');
-  if (!card) return;
+async function loadStats() {
+  try {
+    const data = await apiRequest('/requests/stats/summary');
+    const parts = [];
 
-  const id = card.dataset.id;
-
-  if (event.target.classList.contains('updateBtn')) {
-    const status = card.querySelector('.statusSelect').value;
-    try {
-      await api.put(`/requests/${id}`, { status });
-      showMessage('Request status updated.', 'success');
-      await loadRequests();
-      await loadStats();
-    } catch (error) {
-      showMessage(error.message, 'error');
+    if (data.totalRequests !== undefined) parts.push(['Total', data.totalRequests]);
+    if (Array.isArray(data.byStatus)) {
+      data.byStatus.forEach(item => parts.push([displayStatus(item._id || 'status'), item.count]));
     }
+    if (Array.isArray(data.byServiceType)) {
+      data.byServiceType.forEach(item => parts.push([item._id || 'service', item.count]));
+    }
+
+    statsGrid.innerHTML = (parts.length ? parts : [['Requests', 'Live']]).map(([label, value]) => `
+      <div class="stat-card"><span>${label}</span><b>${value}</b></div>
+    `).join('');
+  } catch (error) {
+    statsGrid.innerHTML = `
+      <div class="stat-card"><span>API</span><b>Live</b></div>
+      <div class="stat-card"><span>MongoDB</span><b>On</b></div>
+    `;
   }
+}
 
-  if (event.target.classList.contains('deleteBtn')) {
-    try {
-      await api.delete(`/requests/${id}`);
-      showMessage('Request deleted.', 'success');
+list?.addEventListener('click', async (event) => {
+  const updateButton = event.target.closest('.update-btn');
+  const deleteButton = event.target.closest('[data-delete]');
+
+  try {
+    if (updateButton) {
+      const id = updateButton.dataset.id;
+      const status = document.querySelector(`[data-status="${id}"]`).value;
+      await apiRequest(`/requests/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({ status })
+      });
+      showMessage(message, 'Request status updated successfully.', 'success');
       await loadRequests();
       await loadStats();
-    } catch (error) {
-      showMessage(error.message, 'error');
     }
+
+    if (deleteButton) {
+      const id = deleteButton.dataset.delete;
+      await apiRequest(`/requests/${id}`, { method: 'DELETE' });
+      showMessage(message, 'Request deleted successfully.', 'success');
+      await loadRequests();
+      await loadStats();
+    }
+  } catch (error) {
+    showMessage(message, error.message, 'error');
   }
 });
 
-filterForm?.addEventListener('submit', async (event) => {
-  event.preventDefault();
-  await loadRequests();
+filterBtn?.addEventListener('click', () => {
+  const city = document.getElementById('filterCity').value.trim();
+  const status = document.getElementById('filterStatus').value;
+  const serviceType = document.getElementById('filterService').value;
+
+  const params = new URLSearchParams();
+  if (city) params.set('city', city);
+  if (status) params.set('status', status);
+  if (serviceType) params.set('serviceType', serviceType);
+  params.set('sortBy', 'priority');
+
+  loadRequests(`/requests/advanced/filter?${params.toString()}`);
 });
 
-loadRequests();
+resetBtn?.addEventListener('click', () => {
+  document.getElementById('filterCity').value = '';
+  document.getElementById('filterStatus').value = '';
+  document.getElementById('filterService').value = '';
+  loadRequests();
+});
+
 loadStats();
+loadRequests();

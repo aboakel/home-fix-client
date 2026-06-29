@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home Fixer | Home</title>
+  <link rel="stylesheet" href="../style/style.css" />
+</head>
+<body>
+  <main class="phone-frame app-phone">
+    <header class="home-header">
+      <div>
+        <h1 class="brand small-brand">HomeFixer</h1>
+        <p>Fix it fast . Done right</p>
+      </div>
+      <div class="avatar"></div>
+    </header>
+
+    <section class="search-row">
+      <div class="search-box">⌕ <span>Search</span></div>
+      <button class="filter-btn" aria-label="filter">☷</button>
+    </section>
+
+    <nav class="chips" id="categoryChips">
+      <button class="chip active" data-category="All">All</button>
+      <button class="chip" data-category="Plumbing">Plumbing</button>
+      <button class="chip" data-category="Electric">Electric</button>
+      <button class="chip" data-category="Cleaning">Cleaning</button>
+      <button class="chip" data-category="Maintenance">Maintenance</button>
+    </nav>
+
+    <section id="providersGrid" class="provider-grid"></section>
+
+    <a class="floating-plus" href="create-request.html">+</a>
+
+    <nav class="bottom-nav figma-nav">
+      <a href="../index.html" title="Profile">●</a>
+      <a class="active" href="home.html" title="Home">⌂</a>
+      <a href="messages.html" title="Messages">▣</a>
+      <a href="dashboard.html" title="Cart">▦</a>
+    </nav>
+  </main>
+
+  <script src="../js/providers.js"></script>
+  <script>
+    renderHomeProviders();
+  </script>
+</body>
+</html>

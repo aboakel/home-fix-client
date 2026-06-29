@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home Fixer | Provider</title>
+  <link rel="stylesheet" href="../style/style.css" />
+</head>
+<body>
+  <main class="phone-frame app-phone white-screen">
+    <header class="top-icons">
+      <a href="home.html" class="icon-link">‹</a>
+      <a href="home.html" class="icon-link">⌕</a>
+    </header>
+
+    <section id="providerDetails" class="provider-details"></section>
+
+    <div class="provider-actions">
+      <button id="contactNow" class="pill-blue">Contact Now</button>
+      <span>OR</span>
+      <a id="sendMessage" class="pill-blue" href="chat.html?mode=empty">Send Message</a>
+    </div>
+    <p class="muted provider-note">Free consultation available.</p>
+
+    <div id="phoneModal" class="modal-overlay hidden">
+      <div class="phone-modal">
+        <button id="closeModal" class="back-mini">‹</button>
+        <h2 id="providerPhone">050-87362598</h2>
+        <a id="callLink" class="call-btn" href="#">⌕ Contect Now</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="../js/providers.js"></script>
+  <script>
+    renderProviderDetails();
+  </script>
+</body>
+</html>

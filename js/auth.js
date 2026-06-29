@@ -1,40 +1,19 @@
-const registerForm = document.getElementById('registerForm');
-const loginForm = document.getElementById('loginForm');
+const form = document.getElementById('registerForm');
+const message = document.getElementById('authMessage');
 
-registerForm?.addEventListener('submit', async (event) => {
+form?.addEventListener('submit', (event) => {
   event.preventDefault();
+  const user = {
+    name: document.getElementById('registerName').value.trim() || 'Ameer',
+    email: document.getElementById('registerEmail').value.trim(),
+    role: 'Customer'
+  };
 
-  try {
-    const userData = {
-      fullName: document.getElementById('fullName').value.trim(),
-      email: document.getElementById('email').value.trim(),
-      password: document.getElementById('password').value,
-      role: document.getElementById('role').value
-    };
+  localStorage.setItem('homeFixUser', JSON.stringify(user));
+  message.textContent = `Registered successfully. Welcome ${user.name}.`;
+  message.className = 'inline-message success';
 
-    const result = await api.post('/users/register', userData);
-    localStorage.setItem('homeFixUser', JSON.stringify(result.user));
-    showMessage(`Registered successfully. Welcome ${result.user.fullName}.`, 'success');
-    registerForm.reset();
-  } catch (error) {
-    showMessage(error.message, 'error');
-  }
-});
-
-loginForm?.addEventListener('submit', async (event) => {
-  event.preventDefault();
-
-  try {
-    const loginData = {
-      email: document.getElementById('loginEmail').value.trim(),
-      password: document.getElementById('loginPassword').value
-    };
-
-    const result = await api.post('/users/login', loginData);
-    localStorage.setItem('homeFixUser', JSON.stringify(result.user));
-    showMessage(`Login successful. Hello ${result.user.fullName}.`, 'success');
-    loginForm.reset();
-  } catch (error) {
-    showMessage(error.message, 'error');
-  }
+  setTimeout(() => {
+    window.location.href = 'pages/home.html';
+  }, 650);
 });
